@@ -1,0 +1,23 @@
+query ListArticles($filter: ListArticleFilter, $orderBy: [ListArticleOrderBy] ) {
+  connections: ListArticles(filter: $filter, orderBy: $orderBy) {
+    totalCount
+    edges {
+      score
+      node {
+        replyCount
+        text
+        articleReplies {
+          reply {
+            type
+          	text
+          }
+        }
+        hyperlinks {
+          url
+          title
+          summary
+        }
+      }
+    }
+  }
+}

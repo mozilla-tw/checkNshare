@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CheckNShare</string>
+    <string name="app_share_name"> Check N Share</string>
+    <string name="title_share_chooser">Share destination</string>
+    <string name="action_share_item">分享</string>
+    <string name="notification_channel">Clipboard Monitor</string>
+</resources>
