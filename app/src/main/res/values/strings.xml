@@ -4,4 +4,6 @@
     <string name="title_share_chooser">Share destination</string>
     <string name="action_share_item">分享</string>
     <string name="notification_channel">Clipboard Monitor</string>
+    <string name="check_result_title_true">This is TRUE</string>
+    <string name="check_result_title_false">This is FAKE</string>
 </resources>

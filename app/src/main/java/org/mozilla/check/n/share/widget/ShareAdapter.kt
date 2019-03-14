@@ -18,6 +18,10 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var shareList: List<ShareEntity> = emptyList()
     private var onLongClickListener: View.OnLongClickListener? = null
 
+    interface OnLongClickListener {
+        fun onLongClick(itemView: View, shareEntity: ShareEntity): Boolean
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.share_item, null)
         val shareItemHolder = ShareItemHolder(itemView)
@@ -36,12 +40,19 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        (holder as ShareItemHolder).unBind()
+        super.onViewRecycled(holder)
+    }
+
     fun setShares(list: List<ShareEntity>) {
         shareList = list
     }
 
-    fun setLongClickListener(listener: View.OnLongClickListener) {
-        onLongClickListener = listener
+    fun setLongClickListener(listener: OnLongClickListener) {
+        onLongClickListener = View.OnLongClickListener {
+            listener.onLongClick(it, it.getTag(R.id.key_holder_item) as ShareEntity)
+        }
     }
 
 
@@ -49,19 +60,28 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 class ShareItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+
     fun setLongClickListener(listener: View.OnLongClickListener) {
         itemView.setOnLongClickListener(listener)
+    }
+
+    fun unBind() {
+        itemView.setTag(R.id.key_holder_item, null)
     }
 
     fun bind(shareItem: ShareEntity) {
         val resources = itemView.resources
 
-        val color = if (shareItem.cofactsResponse >= 100) {
-            ResourcesCompat.getColor(resources, android.R.color.holo_red_light, null)
-        } else if (shareItem.cofactsResponse > 0) {
-            ResourcesCompat.getColor(resources, android.R.color.holo_orange_light, null)
-        } else {
-            ResourcesCompat.getColor(resources, android.R.color.transparent, null)
+        val color = when (shareItem.cofactsResponse) {
+            ShareEntity.RESPONSE_TRUE -> {
+                ResourcesCompat.getColor(resources, android.R.color.holo_green_dark, null)
+            }
+            ShareEntity.RESPONSE_FALSE -> {
+                ResourcesCompat.getColor(resources, android.R.color.holo_red_dark, null)
+            }
+            else -> {
+                ResourcesCompat.getColor(resources, android.R.color.transparent, null)
+            }
         }
         itemView.setBackgroundColor(color)
 
@@ -73,7 +93,6 @@ class ShareItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             contentText.setTextColor(ResourcesCompat.getColor(resources, android.R.color.white, null))
         }
 
-
+        itemView.setTag(R.id.key_holder_item, shareItem)
     }
-
 }

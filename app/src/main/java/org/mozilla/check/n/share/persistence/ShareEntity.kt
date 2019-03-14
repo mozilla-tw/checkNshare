@@ -11,10 +11,23 @@ import androidx.room.PrimaryKey
         Index("content_text", unique = true)
     ])
 data class ShareEntity constructor (
-    @PrimaryKey(autoGenerate = true) val id: Long,
-    @ColumnInfo(name = "content_text") val contentText: String,
-    @ColumnInfo(name = "cofacts_response") val cofactsResponse: Int
+
+    @PrimaryKey(autoGenerate = true) var id: Long,
+    @ColumnInfo(name = "content_text") var contentText: String,
+    @ColumnInfo(name = "cofacts_response") var cofactsResponse: Int
     ) {
-    constructor(contentText: String, cofactsResponse: Int = 0)
-            : this(0, contentText, cofactsResponse)
+    constructor(contentText: String, cofactsResponse: Int = -1)
+            : this(id = 0, contentText = contentText, cofactsResponse = cofactsResponse)
+
+
+    companion object {
+        const val KEY_ID : String = "key_long_share_entity_id"
+        const val KEY_HIGHLIGHT : String = "key_string_share_entity_highlight"
+
+        const val RESPONSE_TRUE = 2
+        const val RESPONSE_FALSE = 1
+        const val RESPONSE_NEUTRAL = 0
+    }
+
+
 }

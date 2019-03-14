@@ -26,32 +26,11 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
 
         val queryText = intent?.getStringExtra(Intent.EXTRA_TEXT) ?: return
 
-        val query = ListArticlesQuery.builder()
-            .filter(
-                ListArticleFilter.builder()
-                    .moreLikeThis(
-                        ListArticleMoreLikeThisInput.builder()
-                            .like(queryText)
-                            .build()
-                    ).build()
-            )
-            .orderBy(
-                listOf(
-                    ListArticleOrderBy.builder()
-                        ._score(SortOrderEnum.DESC)
-                        .build()
-                )
-            )
-            .build()
 
-        val apolloClient = (application as MainApplication).apolloClient
-        apolloClient
-            .query(query)
-            .enqueue(ApolloCallback<ListArticlesQuery.Data>(QueryCallback(application, queryText), uiHandler))
     }
 
     class QueryCallback(val application: Application, val queryText: String) :
-        ApolloCall.Callback<ListArticlesQuery.Data>() {
+            ApolloCall.Callback<ListArticlesQuery.Data>() {
 
 
         override fun onResponse(response: Response<ListArticlesQuery.Data>) {

@@ -4,8 +4,4 @@ import androidx.lifecycle.ViewModel
 
 class ShareEntityViewModel : ViewModel() {
 
-
-
-    override fun onCleared() {
-    }
 }

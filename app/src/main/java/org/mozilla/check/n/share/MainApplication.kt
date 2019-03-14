@@ -31,9 +31,9 @@ class MainApplication : Application() {
             ShareDatabase::class.java, "share.sqlite3")
             .build()
 
-        val intent = Intent()
-        intent.component = ComponentName(this, ClipboardService::class.java)
-        startService(intent)
+//        val intent = Intent()
+//        intent.component = ComponentName(this, ClipboardService::class.java)
+//        startService(intent)
 
 
 
