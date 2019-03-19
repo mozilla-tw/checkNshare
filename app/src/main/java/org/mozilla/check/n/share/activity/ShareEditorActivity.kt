@@ -7,10 +7,14 @@ import android.util.Log
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_edit.*
 import org.mozilla.check.n.share.MainApplication
+import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.persistence.ShareEntity
 import org.mozilla.check.n.share.widget.HighlightTextView.OnSelectionChangeListener
 
@@ -22,7 +26,8 @@ class ShareEditorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(org.mozilla.check.n.share.R.layout.activity_edit)
+        setupView()
+
         val id = intent.getLongExtra(ShareEntity.KEY_ID, -1)
         if (id <= 0) {
             finish()
@@ -32,9 +37,8 @@ class ShareEditorActivity : AppCompatActivity() {
             override fun onSelectionChanged(selStart: Int, selEnd: Int) {
                 val length = edit_content_textview.text.length
                 if (selStart < 0 || selEnd < 0 || selStart > length || selEnd > length) {
-                    Log.d("mmmmmmmm", "s:${selStart}\te:${selEnd}")
                     selectedText = null
-                } else if(selStart > selEnd){
+                } else if (selStart > selEnd) {
                     selectedText = edit_content_textview.text.substring(selEnd, selStart)
                 } else {
                     selectedText = edit_content_textview.text.substring(selStart, selEnd)
@@ -83,4 +87,15 @@ class ShareEditorActivity : AppCompatActivity() {
 
 
     }
+
+    private fun setupView() {
+        setContentView(org.mozilla.check.n.share.R.layout.activity_edit)
+
+
+        supportActionBar?.apply{
+            setDisplayHomeAsUpEnabled(true)
+            title = getString(R.string.appbar_title_editor)
+        }
+    }
+
 }

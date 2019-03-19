@@ -35,10 +35,11 @@
 
         <activity
             android:name="org.mozilla.check.n.share.activity.ShareProxyActivity"
+            android:clearTaskOnLaunch="true"
             android:enabled="true"
             android:exported="true"
             android:label="@string/app_name"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -55,7 +56,9 @@
         <activity
             android:name="org.mozilla.check.n.share.activity.ShareEditorActivity"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:label="@string/appbar_title_editor"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.SharePublishActivity"
             android:enabled="true"
@@ -65,8 +68,8 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />

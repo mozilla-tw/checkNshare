@@ -6,4 +6,6 @@
     <string name="notification_channel">Clipboard Monitor</string>
     <string name="check_result_title_true">This is TRUE</string>
     <string name="check_result_title_false">This is FAKE</string>
+    <string name="appbar_title_editor">Select Highlight Paragraph</string>
+    <string name="btn_action_publish">Publish Highlight</string>
 </resources>

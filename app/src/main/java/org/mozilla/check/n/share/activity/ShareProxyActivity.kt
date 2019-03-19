@@ -50,6 +50,11 @@ class ShareProxyActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        finish()
+    }
+
     private fun setupView() {
     }
 
