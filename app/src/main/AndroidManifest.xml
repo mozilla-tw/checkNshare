@@ -79,7 +79,11 @@
             android:name=".service.CheckService"
             android:enabled="true"
             android:exported="false" />
-        <service android:name=".service.ClipboardService" />
+
+        <service
+                android:name=".entry.ClipService"
+                android:enabled="true"
+                android:exported="false"/>
     </application>
 
 </manifest>

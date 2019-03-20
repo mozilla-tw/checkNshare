@@ -6,8 +6,8 @@ import android.content.Intent
 import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
 import okhttp3.OkHttpClient
+import org.mozilla.check.n.share.entry.ClipService
 import org.mozilla.check.n.share.persistence.ShareDatabase
-import org.mozilla.check.n.share.service.ClipboardService
 
 class MainApplication : Application() {
 
@@ -31,12 +31,9 @@ class MainApplication : Application() {
             ShareDatabase::class.java, "share.sqlite3")
             .build()
 
-//        val intent = Intent()
-//        intent.component = ComponentName(this, ClipboardService::class.java)
-//        startService(intent)
-
-
-
+        val intent = Intent()
+        intent.component = ComponentName(this, ClipService::class.java)
+        startService(intent)
     }
 
 }

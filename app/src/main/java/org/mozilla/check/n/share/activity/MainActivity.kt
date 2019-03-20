@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val adapter = ShareAdapter()
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this)
