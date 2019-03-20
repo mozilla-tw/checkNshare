@@ -35,8 +35,8 @@ class ShareProxyActivity : AppCompatActivity() {
         when {
             intent?.action == Intent.ACTION_SEND -> {
                 if ("text/plain" == intent.type) {
-                    val queryText = intent.getStringExtra(Intent.EXTRA_TEXT)
-                    if (queryText.isNotEmpty()) {
+                    val queryText: String? = intent.getStringExtra(Intent.EXTRA_TEXT)
+                    if (queryText?.isNotEmpty() == true) {
                         handleTextCheck(queryText) // Handle text being sent
                     } else {
                         finish()
