@@ -23,7 +23,7 @@
             android:layout_height="16.61dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="12dp"
-            app:srcCompat="@drawable/check_mark" />
+            app:srcCompat="@drawable/ic_btn_check_mark" />
 
         <TextView
             android:id="@+id/textView"

@@ -3,9 +3,15 @@ package org.mozilla.check.n.share.activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.drawToBitmap
+import androidx.core.view.forEach
+import androidx.core.view.get
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_publish.*
 import org.mozilla.check.n.share.MainApplication
@@ -21,43 +27,11 @@ class SharePublishActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_publish)
+        setupView()
 
         val id = intent.getLongExtra(ShareEntity.KEY_ID, -1)
         if (id <= 0) {
             finish()
-        }
-
-        btn_share.setOnClickListener {
-            val bitmap = publish_container.drawToBitmap()
-            try {
-
-                val cachePath = File(cacheDir, "images")
-                cachePath.mkdirs() // don't forget to make the directory
-                val stream = FileOutputStream("$cachePath/image.png") // overwrites this image every time
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                stream.close()
-
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            val imagePath = File(cacheDir, "images")
-            val newFile = File(imagePath, "image.png")
-            val contentUri =
-                FileProvider.getUriForFile(this@SharePublishActivity, "$packageName.fileprovider", newFile)
-
-            if (contentUri != null) {
-                val shareIntent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // temp permission for receiving app to read this file
-                    setDataAndType(contentUri, contentResolver.getType(contentUri))
-                    putExtra(Intent.EXTRA_STREAM, contentUri)
-
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                }
-                startActivity(Intent.createChooser(shareIntent, "Choose an app"))
-            }
         }
 
         val highlight = intent.getStringExtra(ShareEntity.KEY_HIGHLIGHT)
@@ -68,4 +42,74 @@ class SharePublishActivity : AppCompatActivity() {
             publish_content_textview.text = highlight
         })
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val handled = when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            R.id.appbar_btn_publish -> {
+                val bitmap = publish_container.drawToBitmap()
+                try {
+
+                    val cachePath = File(cacheDir, "images")
+                    cachePath.mkdirs() // don't forget to make the directory
+                    val stream = FileOutputStream("$cachePath/image.png") // overwrites this image every time
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    stream.close()
+
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                val imagePath = File(cacheDir, "images")
+                val newFile = File(imagePath, "image.png")
+                val contentUri =
+                    FileProvider.getUriForFile(this@SharePublishActivity, "$packageName.fileprovider", newFile)
+
+                if (contentUri != null) {
+                    val shareIntent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // temp permission for receiving app to read this file
+                        setDataAndType(contentUri, contentResolver.getType(contentUri))
+                        putExtra(Intent.EXTRA_STREAM, contentUri)
+
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    }
+                    startActivity(Intent.createChooser(shareIntent, "Choose an app"))
+                }
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+        return handled
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.appbar_publish, menu)
+        menu?.forEach {
+            when (it.itemId) {
+                R.id.appbar_btn_publish -> {
+                    DrawableCompat.setTintList(
+                        it.icon.mutate(),
+                        ResourcesCompat.getColorStateList(resources, R.color.appbar_btn_tint, theme)
+                    )
+                }
+            }
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun setupView() {
+        setContentView(R.layout.activity_publish)
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = resources.getString(R.string.appbar_title_publish)
+        }
+    }
+
 }

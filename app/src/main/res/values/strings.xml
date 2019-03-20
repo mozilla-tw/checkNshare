@@ -8,4 +8,6 @@
     <string name="check_result_title_false">This is FAKE</string>
     <string name="appbar_title_editor">Select Highlight Paragraph</string>
     <string name="btn_action_publish">Publish Highlight</string>
+    <string name="appbar_title_publish">Preview</string>
+    <string name="btn_text_publish">Publish</string>
 </resources>

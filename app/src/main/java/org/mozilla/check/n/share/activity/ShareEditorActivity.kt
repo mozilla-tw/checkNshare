@@ -88,11 +88,24 @@ class ShareEditorActivity : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val handled = when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+        return handled
+    }
+
     private fun setupView() {
         setContentView(org.mozilla.check.n.share.R.layout.activity_edit)
 
 
-        supportActionBar?.apply{
+        supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             title = getString(R.string.appbar_title_editor)
         }

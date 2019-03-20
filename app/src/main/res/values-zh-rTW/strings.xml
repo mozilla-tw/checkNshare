@@ -6,4 +6,6 @@
     <string name="check_result_title_true">本文屬實</string>
     <string name="appbar_title_editor">選取重要段落</string>
     <string name="btn_action_publish">產生圖文</string>
+    <string name="appbar_title_publish">預覽</string>
+    <string name="btn_text_publish">發布</string>
 </resources>
