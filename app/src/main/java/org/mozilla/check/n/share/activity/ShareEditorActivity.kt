@@ -3,14 +3,12 @@ package org.mozilla.check.n.share.activity
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_edit.*
 import org.mozilla.check.n.share.MainApplication
@@ -75,6 +73,12 @@ class ShareEditorActivity : AppCompatActivity() {
 
 
             btn_share.setOnClickListener {
+                if (selectedText.isNullOrEmpty()) {
+                    showGuidingDialog()
+                    return@setOnClickListener
+                }
+
+
                 startActivity(Intent().apply {
                     component = ComponentName(applicationContext, SharePublishActivity::class.java)
                     putExtra(ShareEntity.KEY_ID, shareEntity.id)
@@ -86,6 +90,15 @@ class ShareEditorActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    private fun showGuidingDialog() {
+        val builder = AlertDialog.Builder(this).apply {
+            setTitle(R.string.dialog_title_edit_guiding)
+            setView(R.layout.dialog_content)
+            setPositiveButton(R.string.dialog_positive_acknoledged, null)
+        }
+        builder.create().show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

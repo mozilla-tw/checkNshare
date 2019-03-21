@@ -2,7 +2,8 @@
     <string name="app_name">CheckNShare</string>
     <string name="app_share_name"> Check N Share</string>
     <string name="title_share_chooser">Share destination</string>
-    <string name="action_share_item">分享</string>
+    <string name="action_share_item">Share</string>
+    <string name="action_delete_item">Remove</string>
     <string name="notification_channel">Clipboard Monitor</string>
     <string name="check_result_title_true">This is TRUE</string>
     <string name="check_result_title_false">This is FAKE</string>
@@ -10,4 +11,7 @@
     <string name="btn_action_publish">Publish Highlight</string>
     <string name="appbar_title_publish">Preview</string>
     <string name="btn_text_publish">Publish</string>
+    <string name="dialog_title_edit_guiding">選取重要段落製作圖文</string>
+    <string name="dialog_content_edit_guiding">簡明扼要的圖文分享最容易獲得讀者的注意，因此我們預先幫您選好了段落，但您也可以自行修改選取範圍。</string>
+    <string name="dialog_positive_acknoledged">我知道了</string>
 </resources>

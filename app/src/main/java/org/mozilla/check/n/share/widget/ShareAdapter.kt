@@ -17,9 +17,14 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var shareList: List<ShareEntity> = emptyList()
     private var onLongClickListener: View.OnLongClickListener? = null
+    private var onClickListener: View.OnClickListener? = null
 
     interface OnLongClickListener {
         fun onLongClick(itemView: View, shareEntity: ShareEntity): Boolean
+    }
+
+    interface OnClickListener {
+        fun onClick(itemView: View, shareEntity: ShareEntity)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -38,6 +43,10 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         onLongClickListener?.let {
             holder.setLongClickListener(it)
         }
+
+        onClickListener?.let{
+            holder.setClickListener(it)
+        }
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
@@ -55,11 +64,19 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    fun setClickListener(listener: OnClickListener) {
+        onClickListener = View.OnClickListener {
+            listener.onClick(it, it.getTag(R.id.key_holder_item) as ShareEntity)
+        }
+    }
 
 }
 
 class ShareItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    fun setClickListener(listener: View.OnClickListener) {
+        itemView.setOnClickListener(listener)
+    }
 
     fun setLongClickListener(listener: View.OnLongClickListener) {
         itemView.setOnLongClickListener(listener)

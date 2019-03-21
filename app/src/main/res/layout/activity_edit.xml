@@ -4,18 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="21dp">
+    android:layout_height="match_parent">
 
     <org.mozilla.check.n.share.widget.HighlightTextView
         android:id="@+id/edit_content_textview"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="21dp"
         android:textIsSelectable="true"
         android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="炸了！致癌麥片風靡160多個國家？你吃的早餐，竟然危害這麼大？ https://kknews.cc/health/q6qq6jr.html#.XAPgOeHuCPf.lineme" />
 
@@ -23,12 +20,14 @@
         android:id="@+id/btn_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/btn_bg_round"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:paddingTop="12dp"
-        android:paddingBottom="12dp"
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -36,6 +35,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_btn_combined"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_text_publish"
             app:layout_constraintStart_toStartOf="parent"

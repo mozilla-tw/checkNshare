@@ -32,17 +32,23 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         })
 
+        adapter.setClickListener(object : ShareAdapter.OnClickListener {
+            override fun onClick(itemView: View, shareEntity: ShareEntity) {
+                startActivity(Intent(Intent.ACTION_SEND).apply {
+                    putExtra(Intent.EXTRA_TEXT, shareEntity.contentText)
+                    setType("text/plain")
+                    this.component = ComponentName(this@MainActivity, ShareProxyActivity::class.java)
+                })
+            }
+        })
+
         adapter.setLongClickListener(listener = object : ShareAdapter.OnLongClickListener {
             override fun onLongClick(itemView: View, shareEntity: ShareEntity): Boolean {
                 val popupMenu = PopupMenu(this@MainActivity, itemView)
                 popupMenu.menuInflater.inflate(R.menu.share_item_menu, popupMenu.menu)
                 popupMenu.setOnMenuItemClickListener { item ->
                     when (item.itemId) {
-                        R.id.menu_share -> startActivity(Intent(Intent.ACTION_SEND).apply {
-                            putExtra(Intent.EXTRA_TEXT, shareEntity.contentText)
-                            setType("text/plain")
-                            this.component = ComponentName(this@MainActivity, ShareProxyActivity::class.java)
-                        })
+                        //  TODO: support remove item
                     }
                     true
                 }
