@@ -3,12 +3,14 @@ package org.mozilla.check.n.share.activity
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
+import android.text.Selection
+import android.text.Spannable
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.clearSpans
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_edit.*
 import org.mozilla.check.n.share.MainApplication
@@ -34,7 +36,7 @@ class ShareEditorActivity : AppCompatActivity() {
         edit_content_textview.onSelectionChangeListener = object : OnSelectionChangeListener {
             override fun onSelectionChanged(selStart: Int, selEnd: Int) {
                 val length = edit_content_textview.text.length
-                if (selStart < 0 || selEnd < 0 || selStart > length || selEnd > length) {
+                if (selStart < 0 || selEnd < 0 || selStart > length || selEnd > length || selStart == selEnd) {
                     selectedText = null
                 } else if (selStart > selEnd) {
                     selectedText = edit_content_textview.text.substring(selEnd, selStart)
@@ -92,7 +94,34 @@ class ShareEditorActivity : AppCompatActivity() {
 
     }
 
+    private fun selectParagraphAutomatically() {
+        val paragraph = edit_content_textview.text.split('\n')
+        val selectedSpan: Spannable = edit_content_textview.text as Spannable
+        Selection.removeSelection(selectedSpan)
+        if (paragraph.isEmpty()) {
+            Selection.selectAll(selectedSpan)
+        } else {
+            Selection.setSelection(selectedSpan, 0, paragraph[0].length)
+        }
+
+        //  FIXME: There is a bug that first time selection will not be highlighted.
+        //  invalidate does not help. Need to find a work-around solution.
+        edit_content_textview.invalidate()
+    }
+
     private fun showGuidingDialog() {
+        val builder = AlertDialog.Builder(this).apply {
+            setTitle(R.string.dialog_title_edit_guiding)
+            setView(R.layout.dialog_content)
+            setPositiveButton("系統挑選") { dialog, which ->
+                selectParagraphAutomatically()
+            }
+            setNegativeButton("自行選取", null)
+        }
+        builder.create().show()
+    }
+
+    private fun showOnBoardingDialog() {
         val builder = AlertDialog.Builder(this).apply {
             setTitle(R.string.dialog_title_edit_guiding)
             setView(R.layout.dialog_content)
