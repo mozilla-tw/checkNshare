@@ -5,12 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Selection
 import android.text.Spannable
+import android.text.SpannableString
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.clearSpans
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_edit.*
 import org.mozilla.check.n.share.MainApplication
@@ -71,7 +72,7 @@ class ShareEditorActivity : AppCompatActivity() {
 
         val liveShareEntity = (application as MainApplication).database.shareDao().getShare(id)
         liveShareEntity.observe(this, Observer { shareEntity ->
-            edit_content_textview.text = shareEntity.contentText
+            edit_content_textview.setText(SpannableString(shareEntity.contentText), TextView.BufferType.SPANNABLE)
 
 
             btn_share.setOnClickListener {
@@ -95,6 +96,9 @@ class ShareEditorActivity : AppCompatActivity() {
     }
 
     private fun selectParagraphAutomatically() {
+        //  Request focus first before selection made, this solves highlight not redraw problem
+        edit_content_textview.requestFocus()
+
         val paragraph = edit_content_textview.text.split('\n')
         val selectedSpan: Spannable = edit_content_textview.text as Spannable
         Selection.removeSelection(selectedSpan)
@@ -103,10 +107,6 @@ class ShareEditorActivity : AppCompatActivity() {
         } else {
             Selection.setSelection(selectedSpan, 0, paragraph[0].length)
         }
-
-        //  FIXME: There is a bug that first time selection will not be highlighted.
-        //  invalidate does not help. Need to find a work-around solution.
-        edit_content_textview.invalidate()
     }
 
     private fun showGuidingDialog() {
