@@ -1,82 +1,72 @@
 package org.mozilla.check.n.share.service
 
-import android.app.Application
 import android.app.IntentService
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import android.widget.Toast
-import com.apollographql.apollo.ApolloCall
-import com.apollographql.apollo.ApolloCallback
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloException
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.mozilla.check.n.share.MainApplication
-import org.mozilla.check.n.share.persistence.ListArticlesQuery
+import org.mozilla.check.n.share.activity.ShowResultActivity
+import org.mozilla.check.n.share.checker.CofactsChecker
 import org.mozilla.check.n.share.persistence.ShareEntity
-import org.mozilla.check.n.share.persistence.type.*
 
 class CheckService : IntentService(CheckService::class.java.simpleName) {
 
-    val uiHandler: Handler = Handler(Looper.getMainLooper())
+    private val handler = Handler()
 
     override fun onHandleIntent(intent: Intent?) {
-
         val queryText = intent?.getStringExtra(Intent.EXTRA_TEXT) ?: return
-
-
+        handleTextCheck(queryText)
     }
 
-    class QueryCallback(val application: Application, val queryText: String) :
-            ApolloCall.Callback<ListArticlesQuery.Data>() {
 
+    private fun handleTextCheck(inputText: String) {
+        val id = addShare(ShareEntity(inputText))
+        val liveShareEntity = if (id <= 0L) {
+            (application as MainApplication).database.shareDao().getShare(inputText)
+        } else {
+            (application as MainApplication).database.shareDao().getShare(id)
+        }
 
-        override fun onResponse(response: Response<ListArticlesQuery.Data>) {
-            //  parse data
-            val list = response.data()
-            val edges = list?.connections()?.edges()
-            var totalCount: Int = 0
-            var rumorCount: Int = 0
-            edges?.forEach {
-                val articlesReplies = it.node()?.articleReplies()
-                if (articlesReplies != null) {
-                    totalCount += articlesReplies.size
-                }
-                articlesReplies?.forEach {
-                    if (it.reply()?.type() == ReplyTypeEnum.RUMOR) {
-                        rumorCount++
+        GlobalScope.launch(Dispatchers.Main) {
+            liveShareEntity.observeForever(object : Observer<ShareEntity> {
+                var checked = false
+
+                override fun onChanged(shareEntity: ShareEntity) {
+                    if (checked) {
+                        liveShareEntity.removeObserver(this)
+                        stopSelf()
+                        startActivity(Intent().apply {
+                            component = ComponentName(applicationContext, ShowResultActivity::class.java)
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            putExtra(ShareEntity.KEY_ID, shareEntity.id) })
+                    } else {
+                        checked = true
+                        checkRumor(shareEntity)
                     }
                 }
-            }
-
-            val percent = if (edges == null || edges.isEmpty()) {
-                0
-            } else {
-                rumorCount * 100 / totalCount
-            }
-
-
-            GlobalScope.launch {
-                (application as MainApplication).database.shareDao().addShare(ShareEntity(queryText, percent))
-            }
-
-            val toastContent = if (rumorCount == 100) {
-                "你轉貼的內容很可能是謠言喲！"
-            } else if (rumorCount == 0) {
-                "你轉貼的內容找不到相關的謠言".format(percent)
-            } else {
-                "你轉貼的內容有 %2d%% 的機率是謠言喲！".format(percent)
-            }
-
-            Toast.makeText(application, toastContent, Toast.LENGTH_LONG).show()
+            })
         }
-
-        override fun onFailure(e: ApolloException) {
-            Log.e("CheckNShare", e.message, e)
-        }
-
     }
 
+    private fun checkRumor(shareEntity: ShareEntity) {
+
+        val checker = CofactsChecker((application as MainApplication).apolloClient)
+        checker.check(shareEntity, object : CofactsChecker.CheckCallback {
+            override fun provideHandler(): Handler = handler
+
+            override fun onCheckResult(shareEntity: ShareEntity) {
+                GlobalScope.launch {
+                    (application as MainApplication).database.shareDao().updateShare(shareEntity)
+                }
+            }
+        })
+    }
+
+    fun addShare(share: ShareEntity): Long {
+        return (application as MainApplication).database.shareDao().addShare(share)
+    }
 }
