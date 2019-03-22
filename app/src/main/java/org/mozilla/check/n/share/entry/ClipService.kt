@@ -9,7 +9,7 @@ import android.app.Service
 import android.content.*
 import android.text.TextUtils
 import androidx.core.app.NotificationCompat
-import org.mozilla.check.n.share.activity.ShareProxyActivity
+import org.mozilla.check.n.share.service.CheckService
 
 class ClipService : Service() {
 
@@ -59,12 +59,13 @@ class ClipService : Service() {
                 TextUtils.isEmpty(text) -> Log.d("Clipboard", "empty!")
                 else -> {
                     last = text
-                    val activityIntent = Intent(Intent.ACTION_SEND)
-                    activityIntent.putExtra(Intent.EXTRA_TEXT, text)
-                    activityIntent.type = "text/plain"
-                    activityIntent.component = ComponentName(this@ClipService, ShareProxyActivity::class.java)
-                    activityIntent.flags += Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(activityIntent)
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.putExtra(Intent.EXTRA_TEXT, text)
+                    intent.putExtra(org.mozilla.check.n.share.service.SHOW_NOTIFICATION, true)
+                    intent.type = "text/plain"
+                    intent.component = ComponentName(this@ClipService, CheckService::class.java)
+                    intent.flags += Intent.FLAG_ACTIVITY_NEW_TASK
+                    startService(intent)
                 }
             }
         }
