@@ -34,16 +34,17 @@ class ShowResultActivity : AppCompatActivity() {
         val id = intent?.extras?.getLong(ShareEntity.KEY_ID) ?: return
         val shareEntityLiveData = (application as MainApplication).database.shareDao().getShare(id)
         shareEntityLiveData.observe(this@ShowResultActivity, Observer<ShareEntity> {
+            val entity = it
             if (it == null) {
                 return@Observer
             }
-            val resultView = addCheckResultView(it.cofactsResponse)
+            val resultView = addCheckResultView(entity.cofactsResponse)
             resultView.findViewById<Button>(R.id.btn_share)
                 .setOnClickListener {
                     val intent = Intent()
                     intent.component =
                         ComponentName(applicationContext, ShareEditorActivity::class.java)
-                    intent.putExtra(ShareEntity.KEY_ID, it.id)
+                    intent.putExtra(ShareEntity.KEY_ID, entity.id)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                     finish()
