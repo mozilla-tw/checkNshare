@@ -22,7 +22,8 @@
         <activity
             android:name="org.mozilla.check.n.share.activity.MainActivity"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
