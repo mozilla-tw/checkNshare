@@ -1,11 +1,14 @@
 
+.DS_Store
 
 *.iml
-.gradle
-/local.properties
 /.idea/*
-.DS_Store
+/local.properties
+
+.gradle
+.externalNativeBuild
 /build
 /captures
-.externalNativeBuild
+
+/app/google-services.json
 
