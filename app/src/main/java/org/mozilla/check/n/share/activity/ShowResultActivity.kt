@@ -39,16 +39,29 @@ class ShowResultActivity : AppCompatActivity() {
                 return@Observer
             }
             val resultView = addCheckResultView(entity.cofactsResponse)
-            resultView.findViewById<Button>(R.id.btn_share)
-                .setOnClickListener {
-                    val intent = Intent()
-                    intent.component =
-                        ComponentName(applicationContext, ShareEditorActivity::class.java)
-                    intent.putExtra(ShareEntity.KEY_ID, entity.id)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
-                    finish()
-                }
+            if (it.cofactsResponse == ShareEntity.RESPONSE_TRUE) {
+                resultView.findViewById<Button>(R.id.btn_share)
+                    .setOnClickListener {
+                        val intent = Intent()
+                        intent.component =
+                            ComponentName(applicationContext, ShareEditorActivity::class.java)
+                        intent.putExtra(ShareEntity.KEY_ID, entity.id)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
+                        finish()
+                    }
+            } else if (it.cofactsResponse == ShareEntity.RESPONSE_FALSE) {
+                resultView.findViewById<Button>(R.id.btn_share)
+                    .setOnClickListener {
+                        val intent = Intent()
+                        intent.component =
+                            ComponentName(applicationContext, WhyActivity::class.java)
+                        intent.putExtra(ShareEntity.KEY_ID, entity.id)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
+                        finish()
+                    }
+            }
         })
     }
 

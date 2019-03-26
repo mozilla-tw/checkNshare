@@ -32,6 +32,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+                android:name="org.mozilla.check.n.share.activity.WhyActivity"
+                android:enabled="true"
+                android:exported="true"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
 
         <activity
             android:name="org.mozilla.check.n.share.activity.ShareProxyActivity"
