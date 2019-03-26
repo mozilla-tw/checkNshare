@@ -7,6 +7,8 @@ import com.apollographql.apollo.ApolloCallback
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import org.json.JSONArray
+import org.json.JSONObject
 import org.mozilla.check.n.share.persistence.ListArticlesQuery
 import org.mozilla.check.n.share.persistence.ShareEntity
 import org.mozilla.check.n.share.persistence.type.*
@@ -55,15 +57,20 @@ class CofactsChecker(val apolloClient: ApolloClient) {
             val edges = list?.connections()?.edges()
             var totalCount: Int = 0
             var rumorCount: Int = 0
+            val json = JSONArray()
             edges?.forEach {
                 val articlesReplies = it.node()?.articleReplies()
                 if (articlesReplies != null) {
                     totalCount += articlesReplies.size
                 }
                 articlesReplies?.forEach {
+                    val jsonObject = JSONObject()
                     if (it.reply()?.type() == ReplyTypeEnum.RUMOR) {
                         rumorCount++
                     }
+                    jsonObject.put("TYPE", it.reply()?.type())
+                    jsonObject.put("TEXT", it.reply()?.text())
+                    json.put(jsonObject)
                 }
             }
 
@@ -76,6 +83,7 @@ class CofactsChecker(val apolloClient: ApolloClient) {
             }
 
             shareEntity.cofactsResponse = cofactsResponse
+            shareEntity.cofactsExplanation = json.toString()
 
 
             checkCallback.onCheckResult(shareEntity)

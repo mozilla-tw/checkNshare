@@ -14,10 +14,11 @@ data class ShareEntity constructor (
 
     @PrimaryKey(autoGenerate = true) var id: Long,
     @ColumnInfo(name = "content_text") var contentText: String,
-    @ColumnInfo(name = "cofacts_response") var cofactsResponse: Int
+    @ColumnInfo(name = "cofacts_response") var cofactsResponse: Int,
+    @ColumnInfo(name = "cofacts_explanation") var cofactsExplanation: String
     ) {
-    constructor(contentText: String, cofactsResponse: Int = -1)
-            : this(id = 0, contentText = contentText, cofactsResponse = cofactsResponse)
+    constructor(contentText: String, cofactsResponse: Int = -1, cofactsExplanation: String = "")
+            : this(id = 0, contentText = contentText, cofactsResponse = cofactsResponse, cofactsExplanation = cofactsExplanation)
 
 
     companion object {

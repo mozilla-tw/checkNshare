@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f4b408cac8ce9d44ac4b2564ab20201e",
+    "identityHash": "871dbc8dd464331e9d03bdd07d82f130",
     "entities": [
       {
         "tableName": "share",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content_text` TEXT NOT NULL, `cofacts_response` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content_text` TEXT NOT NULL, `cofacts_response` INTEGER NOT NULL, `cofacts_explanation` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -24,6 +24,12 @@
             "fieldPath": "cofactsResponse",
             "columnName": "cofacts_response",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cofactsExplanation",
+            "columnName": "cofacts_explanation",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -49,7 +55,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f4b408cac8ce9d44ac4b2564ab20201e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"871dbc8dd464331e9d03bdd07d82f130\")"
     ]
   }
 }
