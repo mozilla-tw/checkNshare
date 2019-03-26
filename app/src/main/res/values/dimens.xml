@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="share_item_textsize">24sp</dimen>
+    <dimen name="share_item_textsize">16sp</dimen>
 </resources>

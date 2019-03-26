@@ -1,13 +1,11 @@
 package org.mozilla.check.n.share.widget
 
-import android.util.SparseArray
+import android.content.res.Resources
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.util.containsKey
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import org.mozilla.andext.findViewOften
 import org.mozilla.check.n.share.R
@@ -28,7 +26,7 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.share_item, null)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.share_item, parent, false)
         val shareItemHolder = ShareItemHolder(itemView)
         return shareItemHolder
     }
@@ -47,6 +45,7 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         onClickListener?.let{
             holder.setClickListener(it)
         }
+        holder.findViewOften<View>(R.id.indicator).setBackgroundColor(shareEntity.getColor(holder.itemView.resources))
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
@@ -69,7 +68,20 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             listener.onClick(it, it.getTag(R.id.key_holder_item) as ShareEntity)
         }
     }
+}
 
+fun ShareEntity.getColor(resources: Resources): Int {
+    return when (this.cofactsResponse) {
+        ShareEntity.RESPONSE_TRUE -> {
+            Color.parseColor("#37966F")
+        }
+        ShareEntity.RESPONSE_FALSE -> {
+            Color.parseColor("#F1344B")
+        }
+        else -> {
+            Color.parseColor("#414141")
+        }
+    }
 }
 
 class ShareItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -88,27 +100,17 @@ class ShareItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(shareItem: ShareEntity) {
         val resources = itemView.resources
+        val color = shareItem.getColor(itemView.resources)
 
-        val color = when (shareItem.cofactsResponse) {
-            ShareEntity.RESPONSE_TRUE -> {
-                ResourcesCompat.getColor(resources, android.R.color.holo_green_dark, null)
-            }
-            ShareEntity.RESPONSE_FALSE -> {
-                ResourcesCompat.getColor(resources, android.R.color.holo_red_dark, null)
-            }
-            else -> {
-                ResourcesCompat.getColor(resources, android.R.color.transparent, null)
-            }
-        }
-        itemView.setBackgroundColor(color)
+        //itemView.setBackgroundColor(color)
 
-        val contentText: TextView = findViewOften(R.id.share_item_text)
+        val contentText: TextView = findViewOften(R.id.share_item_text1)
         contentText.text = shareItem.contentText
-        if (color == ResourcesCompat.getColor(resources, android.R.color.transparent, null)) {
-            contentText.setTextColor(ResourcesCompat.getColor(resources, android.R.color.darker_gray, null))
-        } else {
-            contentText.setTextColor(ResourcesCompat.getColor(resources, android.R.color.white, null))
-        }
+//        if (color == ResourcesCompat.getColor(resources, android.R.color.transparent, null)) {
+//            contentText.setTextColor(ResourcesCompat.getColor(resources, android.R.color.darker_gray, null))
+//        } else {
+//            contentText.setTextColor(ResourcesCompat.getColor(resources, android.R.color.white, null))
+//        }
 
         itemView.setTag(R.id.key_holder_item, shareItem)
     }
