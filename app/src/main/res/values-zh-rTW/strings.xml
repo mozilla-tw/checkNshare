@@ -12,4 +12,7 @@
     <string name="dialog_content_edit_guiding">簡明扼要的圖文分享最容易獲得讀者的注意，因此我們預先幫您選好了段落，但您也可以自行修改選取範圍。</string>
     <string name="dialog_positive_acknoledged">我知道了</string>
     <string name="action_delete_item">移除</string>
+    <string name="app_share_name">享先查</string>
+    <string name="notification_channel">享先查過濾器</string>
+    <string name="title_share_chooser">選取分享對象</string>
 </resources>
