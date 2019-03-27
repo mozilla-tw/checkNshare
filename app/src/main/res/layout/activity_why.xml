@@ -31,6 +31,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
+            android:background="#F2F2F5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 </LinearLayout>

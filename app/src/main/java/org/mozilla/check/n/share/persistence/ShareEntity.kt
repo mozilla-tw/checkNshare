@@ -1,5 +1,7 @@
 package org.mozilla.check.n.share.persistence
 
+import android.content.res.Resources
+import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
@@ -30,5 +32,17 @@ data class ShareEntity constructor (
         const val RESPONSE_NEUTRAL = 0
     }
 
-
+    fun getColor(): Int {
+        return when (this.cofactsResponse) {
+            ShareEntity.RESPONSE_TRUE -> {
+                Color.parseColor("#37966F")
+            }
+            ShareEntity.RESPONSE_FALSE -> {
+                Color.parseColor("#F1344B")
+            }
+            else -> {
+                Color.parseColor("#414141")
+            }
+        }
+    }
 }
