@@ -1,7 +1,5 @@
 package org.mozilla.check.n.share.activity
 
-import android.content.ComponentName
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -41,13 +39,13 @@ class ShowResultActivity : AppCompatActivity() {
             }
             val resultView = addCheckResultView(entity.cofactsResponse)
             if (it.cofactsResponse == ShareEntity.RESPONSE_TRUE) {
-                resultView.findViewById<Button>(R.id.btn_share)
+                resultView.findViewById<Button>(R.id.action)
                     .setOnClickListener {
                         startActivity(IntentBuilder.doShare(this@ShowResultActivity, entity.id))
                         finish()
                     }
             } else if (it.cofactsResponse == ShareEntity.RESPONSE_FALSE) {
-                resultView.findViewById<Button>(R.id.btn_share)
+                resultView.findViewById<Button>(R.id.action)
                     .setOnClickListener {
                         startActivity(IntentBuilder.askWhy(this@ShowResultActivity, entity.id))
                         finish()
@@ -60,8 +58,8 @@ class ShowResultActivity : AppCompatActivity() {
     private fun addCheckResultView(response: Int): View {
         val viewId = when (response) {
             ShareEntity.RESPONSE_FALSE -> R.layout.check_result_false
-//            0 -> R.layout.check_result_neutral
-            else -> R.layout.check_result_true
+            ShareEntity.RESPONSE_TRUE -> R.layout.check_result_true
+            else -> R.layout.check_result_neutral
         }
 
         return layoutInflater.inflate(viewId, root_content)

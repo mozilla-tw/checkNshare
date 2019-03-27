@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#FF37966F"
+    app:cardBackgroundColor="#F92E4C"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -36,11 +36,11 @@
             android:background="@android:color/white" />
 
         <Button
-            android:id="@+id/btn_share"
+            android:id="@+id/action"
             style="@style/CheckResult.ActionButton"
             android:clickable="true"
             android:focusable="true"
-            android:text="@string/action_share_item"
-            tools:text="@string/action_share_item" />
+            android:text="@string/action_learn_more"
+            tools:text="@string/action_learn_more" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

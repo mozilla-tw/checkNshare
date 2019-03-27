@@ -1,7 +1,5 @@
 package org.mozilla.check.n.share.activity
 
-import android.content.ComponentName
-import android.content.Intent
 import android.os.Bundle
 import android.text.Selection
 import android.text.Spannable
@@ -76,7 +74,7 @@ class ShareEditorActivity : AppCompatActivity() {
             edit_content_textview.setText(SpannableString(shareEntity.contentText), TextView.BufferType.SPANNABLE)
 
 
-            btn_share.setOnClickListener {
+            action.setOnClickListener {
                 if (selectedText.isNullOrEmpty()) {
                     showGuidingDialog()
                     return@setOnClickListener

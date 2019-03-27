@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#2B9671"
+    app:cardBackgroundColor="#414141"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -19,17 +19,21 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="16.59dp"
-            android:layout_height="16.61dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="12dp"
-            app:srcCompat="@drawable/ic_btn_check_mark" />
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
 
         <TextView
             android:id="@+id/textView"
             style="@style/CheckResult.Title"
-            android:text="@string/check_result_title_true"
-            tools:text="@string/check_result_title_true" />
+            android:text="@string/check_result_title_unknown"
+            tools:text="@string/check_result_title_unknown" />
+
+        <Space
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
 
         <Button
             android:id="@+id/action"

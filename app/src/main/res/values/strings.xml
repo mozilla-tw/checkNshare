@@ -3,10 +3,12 @@
     <string name="app_share_name">Check N Share</string>
     <string name="title_share_chooser">Share destination</string>
     <string name="action_share_item">Share</string>
+    <string name="action_learn_more">Learn More</string>
     <string name="action_delete_item">Remove</string>
     <string name="notification_channel">Clipboard Monitor</string>
     <string name="check_result_title_true">This is TRUE</string>
     <string name="check_result_title_false">This is FAKE</string>
+    <string name="check_result_title_unknown">Not checked</string>
     <string name="appbar_title_editor">Select Highlight Paragraph</string>
     <string name="btn_action_publish">Publish Highlight</string>
     <string name="appbar_title_publish">Preview</string>
