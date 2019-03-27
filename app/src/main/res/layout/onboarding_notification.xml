@@ -2,10 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/onboarding"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="match_parent"
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
     <TextView

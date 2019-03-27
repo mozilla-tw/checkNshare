@@ -72,6 +72,10 @@
             android:enabled="true"
             android:exported="true" />
         <activity
+                android:name=".activity.OnboardingActivity"
+                android:enabled="true"
+                android:exported="true" />
+        <activity
             android:name=".activity.ShowResultActivity"
             android:enabled="true"
             android:exported="false"

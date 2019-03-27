@@ -22,9 +22,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val button = findViewById<Button>(R.id.button)
-        val onboarding = findViewById<View>(R.id.onboarding)
-        button.setOnClickListener { onboarding.visibility = View.GONE }
 
         val adapter = ShareAdapter()
         list.adapter = adapter
@@ -63,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+        startActivity(IntentBuilder.doOnboarding(this@MainActivity))
 
 
     }

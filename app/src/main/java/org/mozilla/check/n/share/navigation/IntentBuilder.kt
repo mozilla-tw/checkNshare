@@ -51,5 +51,11 @@ class IntentBuilder {
                 putExtra(ShareEntity.KEY_HIGHLIGHT, highlight)
             }
         }
+
+        fun doOnboarding(context: Context): Intent {
+            return Intent().apply {
+                component = ComponentName(context, OnboardingActivity::class.java)
+            }
+        }
     }
 }
