@@ -38,16 +38,16 @@ class ShowResultActivity : AppCompatActivity() {
                 return@Observer
             }
             val resultView = addCheckResultView(entity.cofactsResponse)
-            if (it.cofactsResponse == ShareEntity.RESPONSE_TRUE) {
-                resultView.findViewById<Button>(R.id.action)
-                    .setOnClickListener {
-                        startActivity(IntentBuilder.doShare(this@ShowResultActivity, entity.id))
-                        finish()
-                    }
-            } else if (it.cofactsResponse == ShareEntity.RESPONSE_FALSE) {
+            if (it.cofactsResponse == ShareEntity.RESPONSE_FALSE) {
                 resultView.findViewById<Button>(R.id.action)
                     .setOnClickListener {
                         startActivity(IntentBuilder.askWhy(this@ShowResultActivity, entity.id))
+                        finish()
+                    }
+            } else {
+                resultView.findViewById<Button>(R.id.action)
+                    .setOnClickListener {
+                        startActivity(IntentBuilder.doShare(this@ShowResultActivity, entity.id))
                         finish()
                     }
             }
