@@ -10,6 +10,7 @@ import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
 class ShowResultActivity : AppCompatActivity() {
 
@@ -49,6 +50,8 @@ class ShowResultActivity : AppCompatActivity() {
                     .setOnClickListener {
                         startActivity(IntentBuilder.doShare(this@ShowResultActivity, entity.id))
                         finish()
+
+                        TelemetryWrapper.shareFact()
                     }
             }
         })
