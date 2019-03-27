@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_edit.*
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
+import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
 import org.mozilla.check.n.share.widget.HighlightTextView.OnSelectionChangeListener
 
@@ -82,11 +83,7 @@ class ShareEditorActivity : AppCompatActivity() {
                 }
 
 
-                startActivity(Intent().apply {
-                    component = ComponentName(applicationContext, SharePublishActivity::class.java)
-                    putExtra(ShareEntity.KEY_ID, shareEntity.id)
-                    putExtra(ShareEntity.KEY_HIGHLIGHT, selectedText)
-                })
+                startActivity(IntentBuilder.createShare(this@ShareEditorActivity, shareEntity.id, selectedText))
             }
 
 

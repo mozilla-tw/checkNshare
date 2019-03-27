@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_share.*
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
+import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
 
 class ShowResultActivity : AppCompatActivity() {
@@ -42,23 +43,13 @@ class ShowResultActivity : AppCompatActivity() {
             if (it.cofactsResponse == ShareEntity.RESPONSE_TRUE) {
                 resultView.findViewById<Button>(R.id.btn_share)
                     .setOnClickListener {
-                        val intent = Intent()
-                        intent.component =
-                            ComponentName(applicationContext, ShareEditorActivity::class.java)
-                        intent.putExtra(ShareEntity.KEY_ID, entity.id)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
+                        startActivity(IntentBuilder.doShare(this@ShowResultActivity, entity.id))
                         finish()
                     }
             } else if (it.cofactsResponse == ShareEntity.RESPONSE_FALSE) {
                 resultView.findViewById<Button>(R.id.btn_share)
                     .setOnClickListener {
-                        val intent = Intent()
-                        intent.component =
-                            ComponentName(applicationContext, WhyActivity::class.java)
-                        intent.putExtra(ShareEntity.KEY_ID, entity.id)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
+                        startActivity(IntentBuilder.askWhy(this@ShowResultActivity, entity.id))
                         finish()
                     }
             }

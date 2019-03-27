@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
+import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
 import org.mozilla.check.n.share.widget.ShareAdapter
 
@@ -37,11 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         adapter.setClickListener(object : ShareAdapter.OnClickListener {
             override fun onClick(itemView: View, shareEntity: ShareEntity) {
-                startActivity(Intent(Intent.ACTION_SEND).apply {
-                    putExtra(Intent.EXTRA_TEXT, shareEntity.contentText)
-                    setType("text/plain")
-                    this.component = ComponentName(this@MainActivity, ShareProxyActivity::class.java)
-                })
+                startActivity(IntentBuilder.checkString(this@MainActivity, shareEntity.contentText))
             }
         })
 

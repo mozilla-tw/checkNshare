@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.activity.ShowResultActivity
 import org.mozilla.check.n.share.checker.CofactsChecker
+import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
 
 
@@ -50,11 +51,7 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
                     if (checked) {
                         liveShareEntity.removeObserver(this)
                         stopSelf()
-                        val intent = Intent().apply {
-                            component = ComponentName(applicationContext, ShowResultActivity::class.java)
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            putExtra(ShareEntity.KEY_ID, shareEntity.id)
-                        }
+                        val intent = IntentBuilder.showResultFromService(this@CheckService, shareEntity.id)
                         if (showNotification) {
                             if (shareEntity.cofactsResponse != ShareEntity.RESPONSE_FALSE) {
                                 return
