@@ -38,7 +38,10 @@ class MainActivity : AppCompatActivity() {
 
         adapter.setClickListener(object : ShareAdapter.OnClickListener {
             override fun onClick(itemView: View, shareEntity: ShareEntity) {
-                startActivity(IntentBuilder.checkString(this@MainActivity, shareEntity.contentText))
+                when (shareEntity.cofactsResponse) {
+                    ShareEntity.RESPONSE_TRUE -> startActivity(IntentBuilder.doShare(this@MainActivity, shareEntity.id))
+                    else -> startActivity(IntentBuilder.askWhy(this@MainActivity, shareEntity.id))
+                }
             }
         })
 
