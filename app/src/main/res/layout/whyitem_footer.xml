@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="#E04751"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="我已了解查證結果，仍要分享原文"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"/>
