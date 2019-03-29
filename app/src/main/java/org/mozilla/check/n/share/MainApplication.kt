@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import org.mozilla.check.n.share.entry.ClipService
 import org.mozilla.check.n.share.persistence.ShareDatabase
 import com.crashlytics.android.Crashlytics
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
 
 class MainApplication : Application() {
@@ -23,6 +24,8 @@ class MainApplication : Application() {
         super.onCreate()
 
         initCrashlytics()
+
+        TelemetryWrapper.init(this)
 
         initApolloClient()
 
