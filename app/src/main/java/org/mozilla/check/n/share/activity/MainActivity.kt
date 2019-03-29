@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -22,6 +23,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val check = findViewById<View>(R.id.check)
+        val checkInput = findViewById<EditText>(R.id.check_input)
+        check.setOnClickListener {startActivity(IntentBuilder.checkString(this@MainActivity, checkInput.text.toString()))}
 
         val adapter = ShareAdapter()
         list.adapter = adapter

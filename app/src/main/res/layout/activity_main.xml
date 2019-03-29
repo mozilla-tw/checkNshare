@@ -10,6 +10,57 @@
     <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:layout_marginTop="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:textSize="24sp"
+                    android:textColor="#FFFFFF"
+                    android:text="今天想分享什麼？"/>
+
+            <EditText
+                    android:id="@+id/check_input"
+                    android:layout_marginTop="23dp"
+                    android:gravity="top|start"
+                    android:hint="請輸入分享文字"
+                    android:background="#FFFFFF"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#F0F0F0"/>
+
+            <FrameLayout
+                    android:id="@+id/check"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:paddingTop="18dp"
+                        android:paddingBottom="18dp"
+                        android:layout_gravity="center"
+                        android:text="查證並分享圖文"
+                        android:drawableStart="@drawable/ic_search"
+                        android:textColor="#3C6EE7"
+                        android:background="#FFFFFF"/>
+            </FrameLayout>
+        </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
