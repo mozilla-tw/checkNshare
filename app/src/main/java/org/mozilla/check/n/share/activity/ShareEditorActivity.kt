@@ -16,6 +16,7 @@ import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import org.mozilla.check.n.share.widget.HighlightTextView.OnSelectionChangeListener
 
 
@@ -75,6 +76,7 @@ class ShareEditorActivity : AppCompatActivity() {
 
 
             action.setOnClickListener {
+                TelemetryWrapper.queue(TelemetryWrapper.Category.TEXT_SELECTION_PAGE_TAP_GENERATE_PHOTO)
                 if (selectedText.isNullOrEmpty()) {
                     showGuidingDialog()
                     return@setOnClickListener
@@ -108,11 +110,15 @@ class ShareEditorActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this).apply {
             setTitle(R.string.dialog_title_edit_guiding)
             setView(R.layout.dialog_content)
-            setPositiveButton("系統挑選") { dialog, which ->
+            setPositiveButton("系統挑選") { _, _ ->
+                TelemetryWrapper.queue(TelemetryWrapper.Category.NO_SELECT_TEXT_ALERT_TAP_AUTO_SELECT)
                 selectParagraphAutomatically()
             }
-            setNegativeButton("自行選取", null)
+            setNegativeButton("自行選取") { _, _ ->
+                TelemetryWrapper.queue(TelemetryWrapper.Category.NO_SELECT_TEXT_ALERT_TAP_MANUAL_SELECT)
+            }
         }
+        TelemetryWrapper.queue(TelemetryWrapper.Category.SHOW_NO_SELECT_TEXT_ALERT)
         builder.create().show()
     }
 
@@ -128,6 +134,7 @@ class ShareEditorActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val handled = when (item?.itemId) {
             android.R.id.home -> {
+                TelemetryWrapper.queue(TelemetryWrapper.Category.TEXT_SELECTION_PAGE_TAP_BACK)
                 finish()
                 true
             }
@@ -146,6 +153,11 @@ class ShareEditorActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = getString(R.string.appbar_title_editor)
         }
+    }
+
+    override fun onBackPressed() {
+        TelemetryWrapper.queue(TelemetryWrapper.Category.TEXT_SELECTION_PAGE_TAP_BACK)
+        super.onBackPressed()
     }
 
 }

@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_publish.*
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.persistence.ShareEntity
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -46,10 +47,12 @@ class SharePublishActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val handled = when (item?.itemId) {
             android.R.id.home -> {
+                TelemetryWrapper.queue(TelemetryWrapper.Category.PHOTO_PREVIEW_TAP_BACK)
                 finish()
                 true
             }
             R.id.appbar_btn_publish -> {
+                TelemetryWrapper.queue(TelemetryWrapper.Category.PHOTO_PREVIEW_TAP_SHARE_PHOTO)
                 val bitmap = publish_container.drawToBitmap()
                 try {
 
@@ -110,6 +113,11 @@ class SharePublishActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = resources.getString(R.string.appbar_title_publish)
         }
+    }
+
+    override fun onBackPressed() {
+        TelemetryWrapper.queue(TelemetryWrapper.Category.PHOTO_PREVIEW_TAP_BACK)
+        super.onBackPressed()
     }
 
 }

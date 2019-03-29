@@ -19,6 +19,7 @@ import org.mozilla.check.n.share.activity.ShowResultActivity
 import org.mozilla.check.n.share.checker.CofactsChecker
 import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
 
 const val SHOW_NOTIFICATION = "show_notification"
@@ -56,6 +57,8 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
                             if (shareEntity.cofactsResponse != ShareEntity.RESPONSE_FALSE) {
                                 return
                             }
+                            intent.extras?.putBoolean(ShowResultActivity.FROM_NOTIFICATION, true)
+                            TelemetryWrapper.queue(TelemetryWrapper.Category.SHOW_MISINFO_NOTIFICATION)
                             val builder = NotificationCompat.Builder(this@CheckService, notificationId)
                             builder.setContentText("糟糕您正在複製的內容含有爭議！")
                             builder.setSubText("點這裡看查證結果。")

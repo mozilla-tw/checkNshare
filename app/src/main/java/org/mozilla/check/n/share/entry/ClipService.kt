@@ -10,6 +10,7 @@ import android.content.*
 import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import org.mozilla.check.n.share.service.CheckService
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
 class ClipService : Service() {
 
@@ -53,6 +54,7 @@ class ClipService : Service() {
         val mCM = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val function = fun() {
             val text = mCM.primaryClip?.getItemAt(0)?.text?.toString()
+            TelemetryWrapper.queue(TelemetryWrapper.Category.BACKGROUND_CHECK_COPIED_TEXT)
             if (text?.length?.compareTo(10) ?: -1 < 0) {
                 return
             }

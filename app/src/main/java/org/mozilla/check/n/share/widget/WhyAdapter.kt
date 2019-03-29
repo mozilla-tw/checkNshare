@@ -12,6 +12,7 @@ import org.mozilla.andext.findViewOften
 import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
 private const val VIEW_TYPE_FOOTER = 0
 private const val VIEW_TYPE_NORMAL = 1
@@ -57,7 +58,10 @@ class WhyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             return shareItemHolder
         } else {
             val itemView = LayoutInflater.from(parent.context).inflate(R.layout.whyitem_footer, parent, false)
-            itemView.setOnClickListener { parent.context.startActivity(IntentBuilder.doShare(parent.context, result.id)) }
+            itemView.setOnClickListener {
+                TelemetryWrapper.queue(TelemetryWrapper.Category.MISINFO_DETAIL_PAGE_TAP_SHARE)
+                parent.context.startActivity(IntentBuilder.doShare(parent.context, result.id))
+            }
             return ShareItemHolder(itemView)
         }
     }

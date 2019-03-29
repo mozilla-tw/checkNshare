@@ -14,6 +14,10 @@ import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
 class ShowResultActivity : AppCompatActivity() {
 
+    companion object {
+        const val FROM_NOTIFICATION = "from_notification"
+    }
+
     override fun onStop() {
         super.onStop()
         finish()
@@ -32,6 +36,9 @@ class ShowResultActivity : AppCompatActivity() {
             true
         }
         val id = intent?.extras?.getLong(ShareEntity.KEY_ID) ?: return
+        if (intent.extras?.getBoolean(FROM_NOTIFICATION) == true) {
+            TelemetryWrapper.queue(TelemetryWrapper.Category.TAP_MISINFO_NOTIFICATION)
+        }
         val shareEntityLiveData = (application as MainApplication).database.shareDao().getShare(id)
         shareEntityLiveData.observe(this@ShowResultActivity, Observer<ShareEntity> {
             val entity = it
@@ -39,21 +46,37 @@ class ShowResultActivity : AppCompatActivity() {
                 return@Observer
             }
             val resultView = addCheckResultView(entity.cofactsResponse)
-            if (it.cofactsResponse == ShareEntity.RESPONSE_FALSE) {
-                resultView.findViewById<Button>(R.id.action)
-                    .setOnClickListener {
-                        startActivity(IntentBuilder.askWhy(this@ShowResultActivity, entity.id))
-                        finish()
-                    }
-            } else {
-                resultView.findViewById<Button>(R.id.action)
-                    .setOnClickListener {
-                        startActivity(IntentBuilder.doShare(this@ShowResultActivity, entity.id))
-                        finish()
-
-                        TelemetryWrapper.shareFact()
-                    }
+            when (entity.cofactsResponse) {
+                ShareEntity.RESPONSE_NEUTRAL -> {
+                    TelemetryWrapper.queue(TelemetryWrapper.Category.SHOW_NO_RESULT_PROMPT)
+                }
+                ShareEntity.RESPONSE_FALSE -> {
+                    TelemetryWrapper.queue(TelemetryWrapper.Category.SHOW_MISINFO_PROMPT)
+                }
+                ShareEntity.RESPONSE_TRUE -> {
+                    TelemetryWrapper.queue(TelemetryWrapper.Category.SHOW_TRUE_PROMPT)
+                }
             }
+            resultView.findViewById<Button>(R.id.action)
+                .setOnClickListener {
+                    when (entity.cofactsResponse) {
+                        ShareEntity.RESPONSE_NEUTRAL -> {
+                            startActivity(IntentBuilder.doShare(this@ShowResultActivity, entity.id))
+                            finish()
+                            TelemetryWrapper.queue(TelemetryWrapper.Category.NO_RESULT_PROMPT_TAP_SHARE)
+                        }
+                        ShareEntity.RESPONSE_FALSE -> {
+                            startActivity(IntentBuilder.askWhy(this@ShowResultActivity, entity.id))
+                            finish()
+                            TelemetryWrapper.queue(TelemetryWrapper.Category.MISINFO_PROMPT_TAP_KNOW_MORE)
+                        }
+                        ShareEntity.RESPONSE_TRUE -> {
+                            startActivity(IntentBuilder.doShare(this@ShowResultActivity, entity.id))
+                            finish()
+                            TelemetryWrapper.queue(TelemetryWrapper.Category.TRUE_PROMPT_TAP_SHARE)
+                        }
+                    }
+                }
         })
     }
 

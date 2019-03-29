@@ -15,6 +15,7 @@ import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import org.mozilla.check.n.share.widget.ShareAdapter
 
 
@@ -25,7 +26,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val check = findViewById<View>(R.id.check)
         val checkInput = findViewById<EditText>(R.id.check_input)
-        check.setOnClickListener {startActivity(IntentBuilder.checkString(this@MainActivity, checkInput.text.toString()))}
+        check.setOnClickListener {
+            TelemetryWrapper.queue(TelemetryWrapper.Category.MAIN_PAGE_TAP_CHECK)
+            startActivity(IntentBuilder.checkString(this@MainActivity, checkInput.text.toString()))
+        }
 
         val adapter = ShareAdapter()
         list.adapter = adapter
@@ -40,8 +44,18 @@ class MainActivity : AppCompatActivity() {
         adapter.setClickListener(object : ShareAdapter.OnClickListener {
             override fun onClick(itemView: View, shareEntity: ShareEntity) {
                 when (shareEntity.cofactsResponse) {
-                    ShareEntity.RESPONSE_TRUE -> startActivity(IntentBuilder.doShare(this@MainActivity, shareEntity.id))
-                    else -> startActivity(IntentBuilder.askWhy(this@MainActivity, shareEntity.id))
+                    ShareEntity.RESPONSE_TRUE -> {
+                        TelemetryWrapper.queue(TelemetryWrapper.Category.MAIN_PAGE_TAP_HISTORY_TRUE)
+                        startActivity(IntentBuilder.doShare(this@MainActivity, shareEntity.id))
+                    }
+                    ShareEntity.RESPONSE_FALSE -> {
+                        TelemetryWrapper.queue(TelemetryWrapper.Category.MAIN_PAGE_TAP_HISTORY_MISINFO)
+                        startActivity(IntentBuilder.askWhy(this@MainActivity, shareEntity.id))
+                    }
+                    ShareEntity.RESPONSE_NEUTRAL -> {
+                        TelemetryWrapper.queue(TelemetryWrapper.Category.MAIN_PAGE_TAP_HISTORY_NEUTRAL)
+                        startActivity(IntentBuilder.doShare(this@MainActivity, shareEntity.id))
+                    }
                 }
             }
         })

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.persistence.ShareEntity
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import org.mozilla.check.n.share.widget.WhyAdapter
 
 class WhyActivity : AppCompatActivity() {
@@ -29,5 +30,10 @@ class WhyActivity : AppCompatActivity() {
                 adapter.initResult(result)
             }
         })
+    }
+
+    override fun onBackPressed() {
+        TelemetryWrapper.queue(TelemetryWrapper.Category.MISINFO_DETAIL_PAGE_TAP_BACK)
+        super.onBackPressed()
     }
 }
