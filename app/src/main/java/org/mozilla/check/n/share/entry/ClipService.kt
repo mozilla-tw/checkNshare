@@ -53,6 +53,9 @@ class ClipService : Service() {
         val mCM = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val function = fun() {
             val text = mCM.primaryClip?.getItemAt(0)?.text?.toString()
+            if (text?.length?.compareTo(10) ?: -1 < 0) {
+                return
+            }
             // For some unknown reason call back nearly always fire twice, dedup.
             when {
                 text == last -> Log.d("Clipboard", "dup!")
