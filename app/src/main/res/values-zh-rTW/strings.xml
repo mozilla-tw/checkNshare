@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CheckNShare</string>
+    <string name="app_name">享先查</string>
     <string name="action_share_item">分享</string>
     <string name="action_learn_more">了解更多</string>
     <string name="check_result_title_false">本文含有爭議內容</string>
