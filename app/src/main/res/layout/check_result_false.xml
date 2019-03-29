@@ -1,46 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="#F92E4C"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:showIn="@layout/activity_share">
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   xmlns:tools="http://schemas.android.com/tools"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   app:cardBackgroundColor="#F92E4C"
+                                   app:layout_constraintBottom_toBottomOf="parent"
+                                   app:layout_constraintEnd_toEndOf="parent"
+                                   app:layout_constraintStart_toStartOf="parent"
+                                   app:layout_constraintTop_toTopOf="parent"
+                                   tools:showIn="@layout/activity_share">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            app:srcCompat="@android:drawable/ic_menu_info_details" />
+            android:orientation="vertical"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
 
-        <TextView
-            android:id="@+id/textView"
-            style="@style/CheckResult.Title"
-            android:text="@string/check_result_title_false"
-            tools:text="@string/check_result_title_false" />
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        <Space
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/white" />
+            <ImageView
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/imageView"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_misinfo"/>
 
-        <Button
-            android:id="@+id/action"
-            style="@style/CheckResult.ActionButton"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/action_learn_more"
-            tools:text="@string/action_learn_more" />
+            <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_toEndOf="@id/imageView"
+                    android:id="@+id/textView"
+                    style="@style/CheckResult.Title"
+                    android:textSize="32sp"
+                    android:text="@string/check_result_title_false"
+                    tools:text="@string/check_result_title_false"/>
+        </RelativeLayout>
+
+        <FrameLayout
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#7FFFFFFF">
+
+            <Button
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:background="#F92E4C"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/action"
+                    android:textSize="32sp"
+                    style="@style/CheckResult.ActionButton"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/action_learn_more"
+                    tools:text="@string/action_learn_more"/>
+        </FrameLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

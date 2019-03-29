@@ -34,6 +34,7 @@
 
         <activity
                 android:name="org.mozilla.check.n.share.activity.WhyActivity"
+                android:launchMode="singleTop"
                 android:enabled="true"
                 android:exported="true"
                 android:theme="@style/AppTheme.NoActionBar">

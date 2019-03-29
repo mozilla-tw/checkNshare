@@ -8,6 +8,7 @@
         tools:context="org.mozilla.check.n.share.activity.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+            android:background="#F2F2F5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -26,7 +27,8 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
                     android:textSize="24sp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#3E3D40"
+                    android:textStyle="bold"
                     android:text="今天想分享什麼？"/>
 
             <EditText
@@ -34,7 +36,7 @@
                     android:id="@+id/check_input"
                     android:layout_marginTop="23dp"
                     android:gravity="top|start"
-                    android:hint="請輸入分享文字"
+                    android:hint="請複製要分享的文字，並貼在這裡......"
                     android:background="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"/>
@@ -57,6 +59,7 @@
                         android:paddingBottom="18dp"
                         android:layout_gravity="center"
                         android:text="查證並分享圖文"
+                        android:drawablePadding="5dp"
                         android:drawableStart="@drawable/ic_search"
                         android:textColor="#3C6EE7"
                         android:background="#FFFFFF"/>

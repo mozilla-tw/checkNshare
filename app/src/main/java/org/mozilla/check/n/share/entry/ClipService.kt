@@ -9,6 +9,7 @@ import android.app.Service
 import android.content.*
 import android.text.TextUtils
 import androidx.core.app.NotificationCompat
+import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.service.CheckService
 import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
@@ -41,9 +42,8 @@ class ClipService : Service() {
             notificationChannelId = "not_used_notification_id"
         }
         val builder = NotificationCompat.Builder(applicationContext, notificationChannelId)
-
-        val notification = builder
-            .build()
+        builder.setContentTitle("享先查正在背景查證您的複製")
+        val notification = builder.setSmallIcon(R.drawable.ic_notification).build()
         startForeground(id, notification)
     }
 

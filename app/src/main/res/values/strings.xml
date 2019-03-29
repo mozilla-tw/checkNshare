@@ -2,7 +2,7 @@
     <string name="app_name">享先查</string>
     <string name="app_share_name">Check N Share</string>
     <string name="title_share_chooser">Share destination</string>
-    <string name="action_share_item">Share</string>
+    <string name="action_share_item">製作圖文並分享</string>
     <string name="action_learn_more">Learn More</string>
     <string name="action_delete_item">Remove</string>
     <string name="notification_channel">Clipboard Monitor</string>

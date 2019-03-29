@@ -4,9 +4,9 @@ import android.app.IntentService
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.*
 import android.os.Build
 import android.os.Handler
 import androidx.core.app.NotificationCompat
@@ -15,11 +15,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.mozilla.check.n.share.MainApplication
+import org.mozilla.check.n.share.R
 import org.mozilla.check.n.share.activity.ShowResultActivity
 import org.mozilla.check.n.share.checker.CofactsChecker
 import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
 import org.mozilla.check.n.share.telemetry.TelemetryWrapper
+import android.graphics.Bitmap
+
+
 
 
 const val SHOW_NOTIFICATION = "show_notification"
@@ -60,11 +64,18 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
                             intent.extras?.putBoolean(ShowResultActivity.FROM_NOTIFICATION, true)
                             TelemetryWrapper.queue(TelemetryWrapper.Category.SHOW_MISINFO_NOTIFICATION)
                             val builder = NotificationCompat.Builder(this@CheckService, notificationId)
-                            builder.setContentText("糟糕您正在複製的內容含有爭議！")
-                            builder.setSubText("點這裡看查證結果。")
+                            builder.setContentTitle("糟糕您正在複製的文字「" + shareEntity.contentText.substring(0, 5) + "⋯」含有爭議！")
+                            builder.setSmallIcon(R.drawable.ic_notification)
+                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_misinfo)
+                            val paint = Paint()
+                            paint.colorFilter = PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN)
+                            val bitmapResult = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+                            val canvas = Canvas(bitmapResult)
+                            canvas.drawBitmap(bitmap, 0f, 0f, paint)
+                            builder.setLargeIcon(bitmapResult)
+                            builder.setContentText("點這裡看查證結果。")
                             builder.setVibrate(longArrayOf(0))
                             builder.setContentIntent(PendingIntent.getActivity(this@CheckService, 5566, intent, PendingIntent.FLAG_ONE_SHOT))
-                            builder.setSmallIcon(org.mozilla.check.n.share.R.drawable.notification_bg)
                             if (Build.VERSION.SDK_INT >= 24) {
                                 builder.priority = NotificationManager.IMPORTANCE_HIGH
                             }
