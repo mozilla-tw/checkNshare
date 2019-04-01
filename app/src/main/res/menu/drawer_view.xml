@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+            android:id="@+id/check_notification"
+            android:title="訊息自動查證"/>
+
+    <item
+            android:id="@+id/check_copy"
+            android:title="複製文字自動查證"
+            app:actionLayout="@layout/item_toggle"
+            app:showAsAction="always"/>
+
+</menu>
+
+

@@ -1,15 +1,21 @@
 package org.mozilla.check.n.share.activity
 
-import android.content.ComponentName
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupMenu
+import android.widget.Switch
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
@@ -19,13 +25,32 @@ import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import org.mozilla.check.n.share.widget.ShareAdapter
 
 
-class MainActivity : AppCompatActivity() {
+
+
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val check = findViewById<View>(R.id.check)
         val checkInput = findViewById<EditText>(R.id.check_input)
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        val actionbar: ActionBar? = supportActionBar
+        actionbar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_hamburger_menu)
+        }
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
+        val menu = navigationView.menu
+        val switch = menu.findItem(R.id.check_copy).actionView.findViewById<Switch>(R.id.switchitem)
+        switch.setOnCheckedChangeListener { _, isChecked -> /* todo */}
+
         check.setOnClickListener {
             TelemetryWrapper.queue(TelemetryWrapper.Category.MAIN_PAGE_TAP_CHECK)
             startActivity(IntentBuilder.checkString(this@MainActivity, checkInput.text.toString()))
@@ -83,4 +108,32 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                drawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                drawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val view: View? = menu.findItem(R.id.check_copy)?.actionView
+        Log.e("mTwTm", view.toString())
+        return super.onCreateOptionsMenu(menu)
+    }
+
+
 }
