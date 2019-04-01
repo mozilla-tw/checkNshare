@@ -78,7 +78,8 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
-        startActivity(IntentBuilder.doOnboarding(this@MainActivity))
+        // preempted
+        // startActivity(IntentBuilder.doOnboarding(this@MainActivity))
 
 
     }
