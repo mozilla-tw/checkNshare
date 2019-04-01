@@ -24,6 +24,12 @@ class ShareEditorActivity : AppCompatActivity() {
 
     private var selectedText: String? = null
 
+    fun getSubstring(start: Int, end: Int) :String {
+        // Vivo need this seemingly redundant toString(). Without that the selection is weirdly changed and
+        // stackoverflow will be fired :)
+        return edit_content_textview.text.toString().substring(start, end)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,9 +46,9 @@ class ShareEditorActivity : AppCompatActivity() {
                 if (selStart < 0 || selEnd < 0 || selStart > length || selEnd > length || selStart == selEnd) {
                     selectedText = null
                 } else if (selStart > selEnd) {
-                    selectedText = edit_content_textview.text.substring(selEnd, selStart)
+                    selectedText = getSubstring(selEnd, selStart)
                 } else {
-                    selectedText = edit_content_textview.text.substring(selStart, selEnd)
+                    selectedText = getSubstring(selStart, selEnd)
                 }
             }
 
