@@ -35,6 +35,7 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
 
     override fun onHandleIntent(intent: Intent?) {
         val queryText = intent?.getStringExtra(Intent.EXTRA_TEXT) ?: return
+        TelemetryWrapper.queue(TelemetryWrapper.Category.HANDLE_QUERY, TelemetryWrapper.ExtraKey.SEARCH_VALUE, queryText)
         val showNotification: Boolean = intent.getBooleanExtra(SHOW_NOTIFICATION, false)
         handleTextCheck(queryText, showNotification)
     }

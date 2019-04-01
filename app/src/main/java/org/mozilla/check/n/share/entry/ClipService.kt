@@ -54,7 +54,7 @@ class ClipService : Service() {
         val mCM = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val function = fun() {
             val text = mCM.primaryClip?.getItemAt(0)?.text?.toString()
-            TelemetryWrapper.queue(TelemetryWrapper.Category.BACKGROUND_CHECK_COPIED_TEXT)
+            TelemetryWrapper.queue(TelemetryWrapper.Category.BACKGROUND_CHECK_COPIED_TEXT, TelemetryWrapper.ExtraKey.COPY_VALUE, text.toString())
             if (text?.length?.compareTo(10) ?: -1 < 0) {
                 return
             }

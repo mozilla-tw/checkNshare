@@ -31,6 +31,12 @@ class TelemetryWrapper {
         const val TAP_MISINFO_NOTIFICATION = "tap_misinfo_notification"
         const val SHOW_NO_RESULT_PROMPT = "show_no_result_prompt"
         const val NO_RESULT_PROMPT_TAP_SHARE = "no_result_prompt_tap_share"
+        const val HANDLE_QUERY = "handle_query"
+    }
+
+    object ExtraKey {
+        const val SEARCH_VALUE = "search_value"
+        const val COPY_VALUE = "copy_value"
     }
 
     companion object {
@@ -43,6 +49,10 @@ class TelemetryWrapper {
 
         fun queue(string: String) {
             EventBuilder(string).queue()
+        }
+
+        fun queue(string: String, extraKey: String, extraValue: String) {
+            EventBuilder(string).extra(extraKey, extraValue).queue()
         }
     }
 
