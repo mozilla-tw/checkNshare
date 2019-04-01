@@ -32,11 +32,14 @@ class TelemetryWrapper {
         const val SHOW_NO_RESULT_PROMPT = "show_no_result_prompt"
         const val NO_RESULT_PROMPT_TAP_SHARE = "no_result_prompt_tap_share"
         const val HANDLE_QUERY = "handle_query"
+        const val MENU_TOGGLE_COPY_TEXT = "menu_toggle_copy_text"
+        const val CATCH_NOTI_ITEM = "catch_noti_item"
     }
 
     object ExtraKey {
         const val SEARCH_VALUE = "search_value"
         const val COPY_VALUE = "copy_value"
+        const val CHANGE_TO = "change_to"
     }
 
     companion object {

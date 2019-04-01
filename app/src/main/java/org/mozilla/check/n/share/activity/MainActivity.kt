@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         switch.isChecked = MainApplication.clipServiceEnabled(this)
         switch.setOnCheckedChangeListener { _, isChecked ->
             MainApplication.setClipServiceEnabled(this, isChecked)
+            TelemetryWrapper.queue(TelemetryWrapper.Category.MENU_TOGGLE_COPY_TEXT, TelemetryWrapper.ExtraKey.CHANGE_TO, isChecked.toString())
             if (isChecked) {
                 val intent = Intent()
                 intent.component = ComponentName(this, ClipService::class.java)
@@ -152,6 +153,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 true
             }
             R.id.check_notification -> {
+                TelemetryWrapper.queue(TelemetryWrapper.Category.CATCH_NOTI_ITEM)
                 startActivity(IntentBuilder.doOnboarding(this@MainActivity))
                 true
             }
