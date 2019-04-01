@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import org.mozilla.check.n.share.R
+import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
 class OnboardingActivity2 : AppCompatActivity() {
 
@@ -21,11 +22,13 @@ class OnboardingActivity2 : AppCompatActivity() {
         findViewById<TextView>(R.id.textView3).text = "取消"
 
         button.setOnClickListener {
+            TelemetryWrapper.queue(TelemetryWrapper.Category.CATCH_NOTI_ONBOARDING_TAP_GO_SETTINGS)
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
             finish()
         }
         val text = findViewById<TextView>(R.id.button2)
         text.setOnClickListener {
+            TelemetryWrapper.queue(TelemetryWrapper.Category.CATCH_NOTI_ONBOARDING_TAP_CANCEL)
             finish()
         }
     }
