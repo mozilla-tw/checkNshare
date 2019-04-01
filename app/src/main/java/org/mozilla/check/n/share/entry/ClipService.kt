@@ -21,6 +21,10 @@ class ClipService : Service() {
 
     private val channelname = "relocation_service"
     private val id = 987
+    private var destroyed = false
+    private lateinit var mCM: ClipboardManager
+    private lateinit var callback: () -> Unit
+
 
     // Configure the notification channel if needed
     private fun configForegroundChannel(context: Context) {
@@ -51,8 +55,13 @@ class ClipService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground()
-        val mCM = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val function = fun() {
+        mCM = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        callback = fun() {
+            // An emergency hotfix for callback is still triggered after stopService()
+            // Could be a memory leak or some other reason but I didn't have time to fix this thoroughly now.
+            if (destroyed) {
+                return
+            }
             val text = mCM.primaryClip?.getItemAt(0)?.text?.toString()
             TelemetryWrapper.queue(TelemetryWrapper.Category.BACKGROUND_CHECK_COPIED_TEXT, TelemetryWrapper.ExtraKey.COPY_VALUE, text.toString())
             if (text?.length?.compareTo(10) ?: -1 < 0) {
@@ -74,7 +83,13 @@ class ClipService : Service() {
                 }
             }
         }
-        mCM.addPrimaryClipChangedListener(function)
+        mCM.addPrimaryClipChangedListener(callback)
         return START_STICKY
+    }
+
+    override fun onDestroy() {
+        mCM.removePrimaryClipChangedListener(callback)
+        destroyed = true
+        super.onDestroy()
     }
 }
