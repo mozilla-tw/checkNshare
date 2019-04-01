@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
@@ -28,7 +29,7 @@ import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import org.mozilla.check.n.share.widget.ShareAdapter
 
 
-
+private const val firebaseIdItemId = 588
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
         val menu = navigationView.menu
+        menu.add(Menu.NONE, firebaseIdItemId, Menu.NONE, FirebaseInstanceId.getInstance().getToken())
         val switch = menu.findItem(R.id.check_copy).actionView.findViewById<Switch>(R.id.switchitem)
         switch.isChecked = MainApplication.clipServiceEnabled(this)
         switch.setOnCheckedChangeListener { _, isChecked ->
@@ -138,6 +140,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            firebaseIdItemId -> {
+                val debugShare = Intent()
+                debugShare.action = Intent.ACTION_SEND
+                debugShare.type = "text/plain"
+                debugShare.putExtra(Intent.EXTRA_TEXT, item.title)
+                startActivity(
+                    Intent.createChooser(
+                        debugShare,
+                        "分享你的id"
+                    )
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)
