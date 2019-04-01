@@ -158,12 +158,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val view: View? = menu.findItem(R.id.check_copy)?.actionView
-        Log.e("mTwTm", view.toString())
-        return super.onCreateOptionsMenu(menu)
-    }
-
-
 }
