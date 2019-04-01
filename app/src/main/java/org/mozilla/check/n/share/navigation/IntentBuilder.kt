@@ -57,5 +57,11 @@ class IntentBuilder {
                 component = ComponentName(context, OnboardingActivity::class.java)
             }
         }
+
+        fun doOnboarding2(context: Context): Intent {
+            return Intent().apply {
+                component = ComponentName(context, OnboardingActivity2::class.java)
+            }
+        }
     }
 }

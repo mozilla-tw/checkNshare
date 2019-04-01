@@ -75,7 +75,13 @@
         <activity
                 android:name=".activity.OnboardingActivity"
                 android:enabled="true"
-                android:exported="true" />
+                android:exported="true"
+                android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+                android:name=".activity.OnboardingActivity2"
+                android:enabled="true"
+                android:exported="true"
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ShowResultActivity"
             android:enabled="true"
@@ -103,6 +109,14 @@
                 android:name=".entry.ClipService"
                 android:enabled="true"
                 android:exported="false"/>
+
+        <service android:name=".service.NotificationService"
+                 android:label="訊息自動查證"
+                 android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
