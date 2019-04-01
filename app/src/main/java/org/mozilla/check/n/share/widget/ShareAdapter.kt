@@ -54,7 +54,7 @@ class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     fun setShares(list: List<ShareEntity>) {
-        shareList = list
+        shareList = list.reversed()
     }
 
     fun setLongClickListener(listener: OnLongClickListener) {
