@@ -120,10 +120,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 return true
             }
         })
-        // preempted
-        // startActivity(IntentBuilder.doOnboarding(this@MainActivity))
-
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -153,6 +149,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         "分享你的id"
                     )
                 )
+                true
+            }
+            R.id.check_notification -> {
+                startActivity(IntentBuilder.doOnboarding(this@MainActivity))
                 true
             }
             else -> super.onOptionsItemSelected(item)
