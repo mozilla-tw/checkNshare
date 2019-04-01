@@ -1,5 +1,7 @@
 package org.mozilla.check.n.share.activity
 
+import android.content.ComponentName
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -19,6 +21,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
+import org.mozilla.check.n.share.entry.ClipService
 import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
 import org.mozilla.check.n.share.telemetry.TelemetryWrapper
@@ -49,7 +52,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
         val menu = navigationView.menu
         val switch = menu.findItem(R.id.check_copy).actionView.findViewById<Switch>(R.id.switchitem)
-        switch.setOnCheckedChangeListener { _, isChecked -> /* todo */}
+        switch.isChecked = MainApplication.clipServiceEnabled(this)
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            MainApplication.setClipServiceEnabled(this, isChecked)
+            if (isChecked) {
+                val intent = Intent()
+                intent.component = ComponentName(this, ClipService::class.java)
+                startService(intent)
+            } else {
+                val intent = Intent()
+                intent.component = ComponentName(this, ClipService::class.java)
+                stopService(intent)
+            }
+        }
 
         check.setOnClickListener {
             TelemetryWrapper.queue(TelemetryWrapper.Category.MAIN_PAGE_TAP_CHECK)
