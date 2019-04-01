@@ -93,16 +93,6 @@ class SharePublishActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.appbar_publish, menu)
-        menu?.forEach {
-            when (it.itemId) {
-                R.id.appbar_btn_publish -> {
-                    DrawableCompat.setTintList(
-                        it.icon.mutate(),
-                        ResourcesCompat.getColorStateList(resources, R.color.appbar_btn_tint, theme)
-                    )
-                }
-            }
-        }
         return super.onCreateOptionsMenu(menu)
     }
 

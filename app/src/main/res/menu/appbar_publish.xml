@@ -2,8 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/appbar_btn_publish"
-        android:icon="@drawable/ic_btn_check_mark"
-        android:iconTint="@color/colorPrimaryDark"
         android:title="@string/btn_text_publish"
         app:showAsAction="always" />
 </menu>
