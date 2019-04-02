@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
@@ -21,6 +22,7 @@ import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import kotlin.random.Random
 
 
 class SharePublishActivity : AppCompatActivity() {
@@ -103,6 +105,17 @@ class SharePublishActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = resources.getString(R.string.appbar_title_publish)
         }
+
+        findViewById<ImageView>(R.id.background_image).setImageResource(
+            when (Random.nextInt() % 6) {
+                0 -> R.drawable.pic01
+                1 -> R.drawable.pic02
+                2 -> R.drawable.pic03
+                3 -> R.drawable.pic04
+                4 -> R.drawable.pic05
+                else -> R.drawable.pic06
+            }
+        )
     }
 
     override fun onBackPressed() {
