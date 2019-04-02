@@ -55,8 +55,10 @@ class CofactsChecker(val apolloClient: ApolloClient) {
             //  parse data
             val list = response.data()
             val edges = list?.connections()?.edges()
-            var totalCount: Int = 0
-            var rumorCount: Int = 0
+            var totalCount = 0
+            var responseFalse = false
+            var notArticle = false
+            var notRumorCount = 0
             val json = JSONArray()
             edges?.forEach {
                 val articlesReplies = it.node()?.articleReplies()
@@ -65,8 +67,12 @@ class CofactsChecker(val apolloClient: ApolloClient) {
                 }
                 articlesReplies?.forEach {
                     val jsonObject = JSONObject()
-                    if (it.reply()?.type() == ReplyTypeEnum.RUMOR) {
-                        rumorCount++
+                    if (it.reply()?.type() == ReplyTypeEnum.RUMOR || it.reply()?.type() == ReplyTypeEnum.OPINIONATED) {
+                        responseFalse = true
+                    } else if (it.reply()?.type() == ReplyTypeEnum.NOT_ARTICLE) {
+                        notArticle = true
+                    } else if (it.reply()?.type() == ReplyTypeEnum.NOT_RUMOR) {
+                        notRumorCount++
                     }
                     jsonObject.put("TYPE", it.reply()?.type())
                     jsonObject.put("TEXT", it.reply()?.text())
@@ -76,10 +82,14 @@ class CofactsChecker(val apolloClient: ApolloClient) {
 
             val cofactsResponse = if (edges == null || edges.isEmpty()) {
                 ShareEntity.RESPONSE_NEUTRAL
-            } else if (rumorCount == 0){
+            } else if (responseFalse){
+                ShareEntity.RESPONSE_FALSE
+            } else if (notArticle){
+                ShareEntity.RESPONSE_NEUTRAL
+            } else if (notRumorCount > 0) {
                 ShareEntity.RESPONSE_TRUE
             } else {
-                ShareEntity.RESPONSE_FALSE
+                ShareEntity.RESPONSE_NEUTRAL
             }
 
             shareEntity.cofactsResponse = cofactsResponse
