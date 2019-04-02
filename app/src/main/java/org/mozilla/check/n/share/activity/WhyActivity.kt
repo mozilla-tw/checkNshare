@@ -14,10 +14,6 @@ import org.mozilla.check.n.share.widget.WhyAdapter
 
 class WhyActivity : AppCompatActivity() {
 
-    companion object {
-        const val FROM_NOTIFICATION = "from_notification"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_why)
@@ -27,9 +23,6 @@ class WhyActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.list)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
-        if (intent.extras?.getBoolean(FROM_NOTIFICATION) == true) {
-            TelemetryWrapper.queue(TelemetryWrapper.Category.TAP_MISINFO_NOTIFICATION)
-        }
         val liveShareEntities = (application as MainApplication).database.shareDao().getShare(intent.extras.getLong(
             ShareEntity.KEY_ID))
         liveShareEntities.observe(this, Observer { result ->

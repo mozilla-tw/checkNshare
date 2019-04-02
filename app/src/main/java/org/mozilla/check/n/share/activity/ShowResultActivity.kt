@@ -14,6 +14,10 @@ import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 
 class ShowResultActivity : AppCompatActivity() {
 
+    companion object {
+        const val FROM_NOTIFICATION = "from_notification"
+    }
+
     override fun onStop() {
         super.onStop()
         finish()
@@ -32,6 +36,9 @@ class ShowResultActivity : AppCompatActivity() {
             true
         }
         val id = intent?.extras?.getLong(ShareEntity.KEY_ID) ?: return
+        if (intent.extras?.getBoolean(FROM_NOTIFICATION) == true) {
+            TelemetryWrapper.queue(TelemetryWrapper.Category.TAP_MISINFO_NOTIFICATION)
+        }
         val shareEntityLiveData = (application as MainApplication).database.shareDao().getShare(id)
         shareEntityLiveData.observe(this@ShowResultActivity, Observer<ShareEntity> {
             val entity = it
