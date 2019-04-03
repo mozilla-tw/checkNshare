@@ -71,7 +71,9 @@ class CofactsChecker(val apolloClient: ApolloClient) {
                     edgeWithSmallestDistance = it
                 }
             }
-            if (smallestDistance > 50.0) {
+            // fixme This actually means we ignore smallestDistance, we're ignoring it this way simply to control
+            // risk since the upcoming release will not be checked by QA
+            if (smallestDistance > 1000.0) {
                 lowSimilarity = true
             } else {
                 edgeWithSmallestDistance?.node()?.articleReplies()?.forEach {
