@@ -84,6 +84,7 @@
                 android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ShowResultActivity"
+            android:excludeFromRecents="true"
             android:enabled="true"
             android:exported="false"
             android:taskAffinity="org.mozilla.check.n.share.activity.ShowResultActivity"
