@@ -60,7 +60,7 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
                                 return
                             }
                             val intent = IntentBuilder.askWhy(this@CheckService, shareEntity.id)
-                            intent.extras?.putBoolean(WhyActivity.FROM_NOTIFICATION, true)
+                            intent.putExtra(WhyActivity.FROM_NOTIFICATION, true)
                             TelemetryWrapper.queue(TelemetryWrapper.Category.SHOW_MISINFO_NOTIFICATION)
                             val builder = NotificationCompat.Builder(this@CheckService, notificationId)
                             builder.setContentTitle("糟糕您正在複製的文字「" + shareEntity.contentText.substring(0, 5) + "⋯」含有爭議！")
