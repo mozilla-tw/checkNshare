@@ -22,6 +22,7 @@ import org.mozilla.check.n.share.persistence.ShareEntity
 import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import android.graphics.Bitmap
 import org.mozilla.check.n.share.activity.WhyActivity
+import kotlin.random.Random
 
 
 const val SHOW_NOTIFICATION = "show_notification"
@@ -74,7 +75,9 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
                             builder.setLargeIcon(bitmapResult)
                             builder.setContentText("點這裡看查證結果。")
                             builder.setVibrate(longArrayOf(0))
-                            builder.setContentIntent(PendingIntent.getActivity(this@CheckService, 5566, intent, PendingIntent.FLAG_ONE_SHOT))
+                            builder.setAutoCancel(true)
+                            val id = Random.nextInt()
+                            builder.setContentIntent(PendingIntent.getActivity(this@CheckService, id, intent, PendingIntent.FLAG_CANCEL_CURRENT))
                             if (Build.VERSION.SDK_INT >= 24) {
                                 builder.priority = NotificationManager.IMPORTANCE_HIGH
                             }
@@ -89,7 +92,7 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
                                 mChannel.description = "CHANNEL"
                                 mNotificationManager.createNotificationChannel(mChannel)
                             }
-                            mNotificationManager.notify(5566, builder.build())
+                            mNotificationManager.notify(id, builder.build())
 
                         } else {
                             val intent = IntentBuilder.showResultFromService(this@CheckService, shareEntity.id)
