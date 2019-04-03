@@ -1,10 +1,9 @@
 package org.mozilla.check.n.share.activity
 
+import android.content.ClipboardManager
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
@@ -18,7 +17,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
@@ -32,12 +30,14 @@ import org.mozilla.check.n.share.widget.ShareAdapter
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var cm: ClipboardManager
+    private lateinit var checkInput: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val check = findViewById<View>(R.id.check)
-        val checkInput = findViewById<EditText>(R.id.check_input)
+        checkInput = findViewById(R.id.check_input)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_hamburger_menu)
         }
+        cm = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
@@ -119,6 +120,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 return true
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        checkInput.setText(cm.primaryClip?.getItemAt(0)?.text)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
