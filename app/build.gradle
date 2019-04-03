@@ -98,6 +98,7 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
     implementation "com.squareup.okhttp3:okhttp:3.11.0"
+    implementation "info.debatty:java-string-similarity:1.1.0"
 
 
     // optional - Test helpers for LiveData

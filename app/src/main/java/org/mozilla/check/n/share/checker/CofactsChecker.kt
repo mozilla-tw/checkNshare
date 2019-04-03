@@ -7,6 +7,7 @@ import com.apollographql.apollo.ApolloCallback
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import info.debatty.java.stringsimilarity.SorensenDice
 import org.json.JSONArray
 import org.json.JSONObject
 import org.mozilla.check.n.share.persistence.ListArticlesQuery
@@ -58,14 +59,22 @@ class CofactsChecker(val apolloClient: ApolloClient) {
             var totalCount = 0
             var responseFalse = false
             var notArticle = false
+            var lowSimilarity = false
             var notRumorCount = 0
             val json = JSONArray()
+            var edgeWithSmallestDistance: ListArticlesQuery.Edge? = edges?.getOrNull(0)
+            var smallestDistance = 1000.0
             edges?.forEach {
-                val articlesReplies = it.node()?.articleReplies()
-                if (articlesReplies != null) {
-                    totalCount += articlesReplies.size
+                val distance = SorensenDice().distance(it.node()?.text(), shareEntity.contentText)
+                if (distance < smallestDistance) {
+                    smallestDistance = distance
+                    edgeWithSmallestDistance = it
                 }
-                articlesReplies?.forEach {
+            }
+            if (smallestDistance > 50.0) {
+                lowSimilarity = true
+            } else {
+                edgeWithSmallestDistance?.node()?.articleReplies()?.forEach {
                     val jsonObject = JSONObject()
                     if (it.reply()?.type() == ReplyTypeEnum.RUMOR || it.reply()?.type() == ReplyTypeEnum.OPINIONATED) {
                         responseFalse = true
@@ -81,6 +90,8 @@ class CofactsChecker(val apolloClient: ApolloClient) {
             }
 
             val cofactsResponse = if (edges == null || edges.isEmpty()) {
+                ShareEntity.RESPONSE_NEUTRAL
+            } else if (lowSimilarity) {
                 ShareEntity.RESPONSE_NEUTRAL
             } else if (responseFalse){
                 ShareEntity.RESPONSE_FALSE
