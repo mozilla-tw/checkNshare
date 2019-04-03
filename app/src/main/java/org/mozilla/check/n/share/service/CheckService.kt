@@ -16,14 +16,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.mozilla.check.n.share.MainApplication
 import org.mozilla.check.n.share.R
-import org.mozilla.check.n.share.activity.ShowResultActivity
 import org.mozilla.check.n.share.checker.CofactsChecker
 import org.mozilla.check.n.share.navigation.IntentBuilder
 import org.mozilla.check.n.share.persistence.ShareEntity
 import org.mozilla.check.n.share.telemetry.TelemetryWrapper
 import android.graphics.Bitmap
-
-
+import org.mozilla.check.n.share.activity.WhyActivity
 
 
 const val SHOW_NOTIFICATION = "show_notification"
@@ -57,12 +55,12 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
                     if (checked) {
                         liveShareEntity.removeObserver(this)
                         stopSelf()
-                        val intent = IntentBuilder.showResultFromService(this@CheckService, shareEntity.id)
                         if (showNotification) {
                             if (shareEntity.cofactsResponse != ShareEntity.RESPONSE_FALSE) {
                                 return
                             }
-                            intent.extras?.putBoolean(ShowResultActivity.FROM_NOTIFICATION, true)
+                            val intent = IntentBuilder.askWhy(this@CheckService, shareEntity.id)
+                            intent.extras?.putBoolean(WhyActivity.FROM_NOTIFICATION, true)
                             TelemetryWrapper.queue(TelemetryWrapper.Category.SHOW_MISINFO_NOTIFICATION)
                             val builder = NotificationCompat.Builder(this@CheckService, notificationId)
                             builder.setContentTitle("糟糕您正在複製的文字「" + shareEntity.contentText.substring(0, 5) + "⋯」含有爭議！")
@@ -94,6 +92,7 @@ class CheckService : IntentService(CheckService::class.java.simpleName) {
                             mNotificationManager.notify(5566, builder.build())
 
                         } else {
+                            val intent = IntentBuilder.showResultFromService(this@CheckService, shareEntity.id)
                             startActivity(intent)
                         }
                     } else {
